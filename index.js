@@ -54,19 +54,10 @@ const topMovies = [
   },
 ];
 
-// You can customize this list or add more movies according to your preferences.
-
-// GET requests
-app.get("/", (req, res) => {
-  res.send("Welcome to my book club!");
-});
-
-app.get("/documentation", (req, res) => {
-  res.sendFile("public/documentation.html", { root: __dirname });
-});
-
-app.get("/books", (req, res) => {
-  res.json(topBooks);
+// Create an Express GET route at the endpoint "/movies"
+app.get("/movies", (req, res) => {
+  // Return the JSON object containing data about your top 10 movies
+  res.json(topMovies);
 });
 
 // listen for requests
