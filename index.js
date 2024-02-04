@@ -60,6 +60,11 @@ app.get("/movies", (req, res) => {
   res.json(topMovies);
 });
 
+// GET route for "/"
+app.get("/", (req, res) => {
+  res.send("Welcome to my Movie API!"); // Replace with your desired default response
+});
+
 // listen for requests
 app.listen(8080, () => {
   console.log("Your app is listening on port 8080.");
