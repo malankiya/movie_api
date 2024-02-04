@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 // Define an array with data about the top 10 movies
 const topMovies = [
@@ -56,6 +57,9 @@ const topMovies = [
 
 // Serve static files from the "public" folder
 app.use(express.static("public"));
+
+// Use Morgan middleware for logging requests
+app.use(morgan("dev"));
 
 // Create an Express GET route at the endpoint "/movies"
 app.get("/movies", (req, res) => {
