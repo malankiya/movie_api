@@ -55,12 +55,6 @@ const topMovies = [
   },
 ];
 
-// Serve static files from the "public" folder
-app.use(express.static("public"));
-
-// Use Morgan middleware for logging requests
-app.use(morgan("dev"));
-
 // Create an Express GET route at the endpoint "/movies"
 app.get("/movies", (req, res) => {
   // Return the JSON object containing data about your top 10 movies
@@ -70,6 +64,20 @@ app.get("/movies", (req, res) => {
 // GET route for "/"
 app.get("/", (req, res) => {
   res.send("Welcome to my Movie API!"); // Replace with your desired default response
+});
+
+// Serve static files from the "public" folder
+app.use(express.static("public"));
+
+// Use Morgan middleware for logging requests
+app.use(morgan("dev"));
+
+// Error-handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+
+  // Respond with a generic error message
+  res.status(500).send("Something went wrong!");
 });
 
 // listen for requests
