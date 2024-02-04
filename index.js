@@ -54,6 +54,9 @@ const topMovies = [
   },
 ];
 
+// Serve static files from the "public" folder
+app.use(express.static("public"));
+
 // Create an Express GET route at the endpoint "/movies"
 app.get("/movies", (req, res) => {
   // Return the JSON object containing data about your top 10 movies
