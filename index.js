@@ -88,6 +88,18 @@ app.get("/", (req, res) => {
   res.send("Welcome to my Movie API!"); // Replace with your desired default response
 });
 
+// Gets the data about a single movie, by title
+app.get("/movies/:title", (req, res) => {
+  const requestedMovie = movies.find(
+    (movie) => movie.title === req.params.title
+  );
+
+  if (requestedMovie) {
+    res.json(requestedMovie);
+  } else {
+    res.status(404).send("Movie not found");
+  }
+});
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
