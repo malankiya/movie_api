@@ -9,7 +9,6 @@ let users = [
   (id = "1"),
   (Name = "joe"),
   (Favouritemovie = []),
-
   (id = "2"),
   (Name = "joni"),
   (Favouritemovie = ["Pulp Fiction"]),
