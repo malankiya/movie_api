@@ -20,8 +20,14 @@ const topMovies = [
     title: "The Shawshank Redemption",
     year: 1994,
     movieUrl: "https://www.themoviedb.org/movie/278-the-shawshank-redemption ",
-    genre: {
+    Director: "Frank Darabont",
+    Director: {
       Name: "Frank Darabont",
+      year: 1991,
+      bio: "Frank Darabont is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+    },
+    genre: {
+      Name: "Thriller",
       birth: 1987,
       bio: "Frank Darabont is a Hungarian-American film director, screenwriter, and producer. He is best known for his work in the horror genre, particularly adaptations of Stephen King's novels. Besides 'The Shawshank Redemption,' Darabont directed other acclaimed films like 'The Green Mile' and 'The Mist.'",
     },
@@ -30,8 +36,13 @@ const topMovies = [
     title: "The Godfather",
     year: 1972,
     movieUrl: "https://www.themoviedb.org/movie/238-the-godfather ",
-    genre: {
+    Director: {
       Name: "Francis Ford Coppola",
+      year: 1992,
+      bio: "Francis Ford Coppola is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+    },
+    genre: {
+      Name: "fiction",
       birth: 1965,
       bio: "Francis Ford Coppola is an American film director, producer, and screenwriter. He is widely regarded as one of the greatest filmmakers in Hollywood history. In addition to directing 'The Godfather' trilogy, Coppola directed iconic films such as 'Apocalypse Now' and 'The Conversation.'",
     },
@@ -40,8 +51,14 @@ const topMovies = [
     title: "The Dark Knight",
     year: 2008,
     movieUrl: "https://www.themoviedb.org/movie/155-the-dark-knight ",
-    genre: {
+    Director: {
       Name: "Christopher Nolan",
+      year: 1993,
+      bio: "Christopher Nolan is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+    },
+
+    genre: {
+      Name: "Science fiction",
       birth: 1967,
       bio: "Christopher Nolan is a British-American filmmaker known for his distinctive storytelling and complex narratives. In addition to directing 'The Dark Knight' trilogy, Nolan directed mind-bending films like 'Inception,' 'Interstellar,' and 'Dunkirk.'",
     },
@@ -50,18 +67,28 @@ const topMovies = [
     title: "Pulp Fiction",
     year: 1994,
     movieUrl: "https://www.themoviedb.org/movie/680-pulp-fiction",
-    genre: {
+    Director: {
       Name: "Quentin Tarantino",
+      year: 1994,
+      bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+    },
+    genre: {
+      Name: "Action",
       birth: 1970,
-      bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences. In addition to 'Pulp Fiction,' Tarantino directed 'Reservoir Dogs,' 'Kill Bill,' and 'Django Unchained.'",
+      bio: "In addition to 'Pulp Fiction,' Tarantino directed 'Reservoir Dogs,' 'Kill Bill,' and 'Django Unchained.'",
     },
   },
   {
     title: "Schindler's List",
     year: 1993,
     movieUrl: "https://www.themoviedb.org/movie/424-schindler-s-list ",
-    genre: {
+    Director: {
       Name: "Steven Spielberg",
+      year: 1993,
+      bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+    },
+    genre: {
+      Name: "Drama",
       birth: 1975,
       bio: "Steven Spielberg is an American film director, producer, and screenwriter. He is one of the most successful and influential directors in the history of cinema. Spielberg has directed numerous blockbuster films, including 'Jaws,' 'E.T. the Extra-Terrestrial,' and 'Jurassic Park.' 'Schindler's List' is a powerful drama that earned Spielberg an Academy Award for Best Director.",
     },
@@ -90,6 +117,31 @@ app.get("/movies/:title", (req, res) => {
     res.status(400).send("Movie not found");
   }
 });
+// Gets the data about a genre, by genrename
+app.get("/movies/genre/:genreName", (req, res) => {
+  const { genreName } = req.params;
+  const genre = topMovies.find((movie) => movie.genre.Name === genreName).genre;
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send(" not found genre");
+  }
+});
+// Return data about a genre (description)
+app.get("/movies/directors/:directorName", (req, res) => {
+  const { directorName } = req.params;
+  const director = topMovies.find(
+    (movie) => movie.Director.Name === directorName
+  ).Director;
+
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(400).send(" not found director");
+  }
+});
+
 // Serve static files from the "public" folder
 // app.use(express.static(path.join(__dirname, "public")));
 
