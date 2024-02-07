@@ -129,6 +129,20 @@ app.put("/users/:id", (req, res) => {
   }
 });
 
+//Allow users to add a movie to their list of favorites
+app.post("/users/:id/:movieTitle", (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.Favouritemovie.push(movieTitle); // Update the property name here
+    res.status(200).send(`${movieTitle} has been added to user  ${id}'s array`);
+  } else {
+    res.status(400).send("user not found");
+  }
+});
+
 // Create an Express GET route at the endpoint "/movies"
 app.get("/movies", (req, res) => {
   res.json(topMovies);
