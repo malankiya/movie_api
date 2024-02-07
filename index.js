@@ -21,70 +21,41 @@ const topMovies = [
     director: "Frank Darabont",
     year: 1994,
     genre: "action",
-    phase: "1",
+    movieUrl: "https://www.themoviedb.org/movie/278-the-shawshank-redemption ",
+    bio: "Frank Darabont is a Hungarian-American film director, screenwriter, and producer. He is best known for his work in the horror genre, particularly adaptations of Stephen King's novels. Besides 'The Shawshank Redemption,' Darabont directed other acclaimed films like 'The Green Mile' and 'The Mist.'",
   },
   {
     title: "The Godfather",
     director: "Francis Ford Coppola",
     year: 1972,
-    genre: "action",
-    phase: "2",
+    genre: "Drama",
+    movieUrl: "https://www.themoviedb.org/movie/238-the-godfather ",
+    bio: "Francis Ford Coppola is an American film director, producer, and screenwriter. He is widely regarded as one of the greatest filmmakers in Hollywood history. In addition to directing 'The Godfather' trilogy, Coppola directed iconic films such as 'Apocalypse Now' and 'The Conversation.'",
   },
   {
     title: "The Dark Knight",
     director: "Christopher Nolan",
     year: 2008,
     genre: "action",
-    phase: "3",
+    movieUrl: "https://www.themoviedb.org/movie/155-the-dark-knight ",
+    bio: "Christopher Nolan is a British-American filmmaker known for his distinctive storytelling and complex narratives. In addition to directing 'The Dark Knight' trilogy, Nolan directed mind-bending films like 'Inception,' 'Interstellar,' and 'Dunkirk.'",
   },
   {
     title: "Pulp Fiction",
     director: "Quentin Tarantino",
     year: 1994,
     genre: "action",
-    phase: "4",
-  },
-  {
-    title: "The Lord of the Rings: The Return of the King",
-    director: "Peter Jackson",
-    year: 2003,
-    genre: "action",
-    phase: "5",
+    movieUrl: "https://www.themoviedb.org/movie/680-pulp-fiction",
+    bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences. In addition to 'Pulp Fiction,' Tarantino directed 'Reservoir Dogs,' 'Kill Bill,' and 'Django Unchained.'",
   },
   {
     title: "Schindler's List",
     director: "Steven Spielberg",
     year: 1993,
     genre: "action",
-    phase: "6",
-  },
-  {
-    title: "Forrest Gump",
-    director: "Robert Zemeckis",
-    year: 1994,
-    genre: "action",
-    phase: "7",
-  },
-  {
-    title: "Inception",
-    director: "Christopher Nolan",
-    year: 2010,
-    genre: "action",
-    phase: "8",
-  },
-  {
-    title: "The Matrix",
-    director: "The Wachowskis",
-    year: 1999,
-    genre: "action",
-    phase: "9",
-  },
-  {
-    title: "Citizen Kane",
-    director: "Orson Welles",
-    year: 1941,
-    genre: "action",
-    phase: "10",
+    movieUrl: "https://www.themoviedb.org/movie/424-schindler-s-list ",
+
+    bio: "Steven Spielberg is an American film director, producer, and screenwriter. He is one of the most successful and influential directors in the history of cinema. Spielberg has directed numerous blockbuster films, including 'Jaws,' 'E.T. the Extra-Terrestrial,' and 'Jurassic Park.' 'Schindler's List' is a powerful drama that earned Spielberg an Academy Award for Best Director.",
   },
 ];
 
@@ -102,7 +73,7 @@ app.get("/", (req, res) => {
 // Gets the data about a single movie, by title
 app.get("/movies/:title", (req, res) => {
   const { title } = req.params;
-  const movie = movies.find((movie) => movie.Title === title);
+  const movie = topMovies.find((movie) => movie.title === title);
 
   if (movie) {
     res.status(200).json(movie);
@@ -125,6 +96,6 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(8080, () => {
-  console.log("Your app is listening on port 8080.");
+app.listen(3000, () => {
+  console.log("Your app is listening on port 3000.");
 });
