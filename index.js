@@ -161,6 +161,20 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
   }
 });
 
+//Allow existing users to deregister
+app.delete("/users/:id", (req, res) => {
+  const { id } = req.params;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    users = users.filter((user) => user.id != id);
+    res.send(` user  ${id} has been deleted`);
+  } else {
+    res.status(400).send("user not found");
+  }
+});
+
 // Create an Express GET route at the endpoint "/movies"
 app.get("/movies", (req, res) => {
   res.json(topMovies);
