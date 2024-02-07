@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 uuid = require("uuid");
+// const path = require("path");
 
 app.use(bodyParser.json());
 // Define an array with users
@@ -9,9 +10,9 @@ let users = [
   (id = "1"),
   (Name = "joe"),
   (Favouritemovie = []),
-  (id = "2"),
-  (Name = "joni"),
-  (Favouritemovie = ["Pulp Fiction"]),
+  (id = "1"),
+  (Name = "joe"),
+  (Favouritemovie = []),
 ];
 // Define an array with data about the top 10 movies
 const topMovies = [
@@ -101,25 +102,25 @@ app.get("/", (req, res) => {
 // Gets the data about a single movie, by title
 app.get("/movies/:title", (req, res) => {
   const { title } = req.params;
-  const movie = movies.find((movie) => movie.title === title);
+  const movie = movies.find((movie) => movie.Title === title);
 
   if (movie) {
     res.status(200).json(movie);
   } else {
-    res.status(404).send("Movie not found");
+    res.status(400).send("Movie not found");
   }
 });
 // Serve static files from the "public" folder
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
 // Use Morgan middleware for logging requests
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
 
-  // Respond with a generic error message
+  //   Respond with a generic error message
   res.status(500).send("Something went wrong!");
 });
 
