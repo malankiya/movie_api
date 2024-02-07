@@ -99,6 +99,10 @@ const topMovies = [
     },
   },
 ];
+// get all users
+app.get("/users", (req, res) => {
+  res.json(users);
+});
 
 // Allow new users to register;
 
