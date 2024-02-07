@@ -1,20 +1,23 @@
-const express = require("express");
-const app = express();
-const bodyParser = require("body-parser");
-uuid = require("uuid");
-// const path = require("path");
+const express = require("express"),
+  app = express(),
+  bodyParser = require("body-parser"),
+  uuid = require("uuid");
 
 app.use(bodyParser.json());
 // Define an array with users
 let users = [
-  (id = "1"),
-  (Name = "joe"),
-  (Favouritemovie = []),
-  (id = "1"),
-  (Name = "joe"),
-  (Favouritemovie = []),
+  {
+    id: 1,
+    Name: "joe",
+    Favouritemovie: [],
+  },
+  {
+    id: 2,
+    Name: "jon",
+    Favouritemovie: ["The Shawshank Redemption"],
+  },
 ];
-// Define an array with data about the top 10 movies
+// Define an array with data about the movies
 const topMovies = [
   {
     title: "The Shawshank Redemption",
@@ -85,7 +88,7 @@ const topMovies = [
     Director: {
       Name: "Steven Spielberg",
       year: 1993,
-      bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
+      bio: "Steven Spielberg is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
     },
     genre: {
       Name: "Drama",
@@ -95,15 +98,23 @@ const topMovies = [
   },
 ];
 
-// Create an Express GET route at the endpoint "/movies"
-app.get("/movies", (req, res) => {
-  // Return the JSON object containing data about your top 10 movies
-  res.json(topMovies);
+// Allow new users to register;
+
+app.post("/users", (req, res) => {
+  const newUser = req.body;
+
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).send("users need names");
+  }
 });
 
-// GET route for "/"
-app.get("/", (req, res) => {
-  res.send("Welcome to my Movie API!"); // Replace with your desired default response
+// Create an Express GET route at the endpoint "/movies"
+app.get("/movies", (req, res) => {
+  res.json(topMovies);
 });
 
 // Gets the data about a single movie, by title
@@ -117,6 +128,7 @@ app.get("/movies/:title", (req, res) => {
     res.status(400).send("Movie not found");
   }
 });
+
 // Gets the data about a genre, by genrename
 app.get("/movies/genre/:genreName", (req, res) => {
   const { genreName } = req.params;
@@ -128,6 +140,7 @@ app.get("/movies/genre/:genreName", (req, res) => {
     res.status(400).send(" not found genre");
   }
 });
+
 // Return data about a genre (description)
 app.get("/movies/directors/:directorName", (req, res) => {
   const { directorName } = req.params;
@@ -141,12 +154,6 @@ app.get("/movies/directors/:directorName", (req, res) => {
     res.status(400).send(" not found director");
   }
 });
-
-// Serve static files from the "public" folder
-// app.use(express.static(path.join(__dirname, "public")));
-
-// Use Morgan middleware for logging requests
-// app.use(morgan("dev"));
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
