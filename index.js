@@ -1,104 +1,25 @@
-const { update } = require("lodash");
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+const express = require("express");
+const app = express();
 
-const express = require("express"),
-  app = express(),
-  bodyParser = require("body-parser"),
-  uuid = require("uuid");
+app.use(express.urlencoded({ extended: true }));
+uuid = require("uuid");
 
-app.use(bodyParser.json());
-// Define an array with users
-let users = [
-  {
-    id: 1,
-    Name: "joe",
-    Favouritemovie: [],
-  },
-  {
-    id: 2,
-    Name: "jon",
-    Favouritemovie: ["The Shawshank Redemption"],
-  },
-];
-// Define an array with data about the movies
-const topMovies = [
-  {
-    title: "The Shawshank Redemption",
-    year: 1994,
-    movieUrl: "https://www.themoviedb.org/movie/278-the-shawshank-redemption ",
-    Director: "Frank Darabont",
-    Director: {
-      Name: "Frank Darabont",
-      year: 1991,
-      bio: "Frank Darabont is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-    },
-    genre: {
-      Name: "Thriller",
-      birth: 1987,
-      bio: "Frank Darabont is a Hungarian-American film director, screenwriter, and producer. He is best known for his work in the horror genre, particularly adaptations of Stephen King's novels. Besides 'The Shawshank Redemption,' Darabont directed other acclaimed films like 'The Green Mile' and 'The Mist.'",
-    },
-  },
-  {
-    title: "The Godfather",
-    year: 1972,
-    movieUrl: "https://www.themoviedb.org/movie/238-the-godfather ",
-    Director: {
-      Name: "Francis Ford Coppola",
-      year: 1992,
-      bio: "Francis Ford Coppola is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-    },
-    genre: {
-      Name: "fiction",
-      birth: 1965,
-      bio: "Francis Ford Coppola is an American film director, producer, and screenwriter. He is widely regarded as one of the greatest filmmakers in Hollywood history. In addition to directing 'The Godfather' trilogy, Coppola directed iconic films such as 'Apocalypse Now' and 'The Conversation.'",
-    },
-  },
-  {
-    title: "The Dark Knight",
-    year: 2008,
-    movieUrl: "https://www.themoviedb.org/movie/155-the-dark-knight ",
-    Director: {
-      Name: "Christopher Nolan",
-      year: 1993,
-      bio: "Christopher Nolan is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-    },
+// connection with mongoos
 
-    genre: {
-      Name: "Science fiction",
-      birth: 1967,
-      bio: "Christopher Nolan is a British-American filmmaker known for his distinctive storytelling and complex narratives. In addition to directing 'The Dark Knight' trilogy, Nolan directed mind-bending films like 'Inception,' 'Interstellar,' and 'Dunkirk.'",
-    },
-  },
-  {
-    title: "Pulp Fiction",
-    year: 1994,
-    movieUrl: "https://www.themoviedb.org/movie/680-pulp-fiction",
-    Director: {
-      Name: "Quentin Tarantino",
-      year: 1994,
-      bio: "Quentin Tarantino is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-    },
-    genre: {
-      Name: "Action",
-      birth: 1970,
-      bio: "In addition to 'Pulp Fiction,' Tarantino directed 'Reservoir Dogs,' 'Kill Bill,' and 'Django Unchained.'",
-    },
-  },
-  {
-    title: "Schindler's List",
-    year: 1993,
-    movieUrl: "https://www.themoviedb.org/movie/424-schindler-s-list ",
-    Director: {
-      Name: "Steven Spielberg",
-      year: 1993,
-      bio: "Steven Spielberg is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-    },
-    genre: {
-      Name: "Drama",
-      birth: 1975,
-      bio: "Steven Spielberg is an American film director, producer, and screenwriter. He is one of the most successful and influential directors in the history of cinema. Spielberg has directed numerous blockbuster films, including 'Jaws,' 'E.T. the Extra-Terrestrial,' and 'Jurassic Park.' 'Schindler's List' is a powerful drama that earned Spielberg an Academy Award for Best Director.",
-    },
-  },
-];
+mongoose
+  .connect("mongodb://localhost:27017/db", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log("Mongo Error", err));
+
+// Import Mongoose models
+const Movies = Models.Movie;
+const Users = Models.User;
+
 // get all users
 app.get("/users", (req, res) => {
   res.json(users);
@@ -231,6 +152,6 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(3000, () => {
-  console.log("Your app is listening on port 3000.");
+app.listen(8000, () => {
+  console.log("Your app is listening on port 8000.");
 });
