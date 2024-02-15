@@ -53,192 +53,123 @@
 </head>
 
 <body>
-    <h1>Movie API</h1>
-    <p>Server-side component of a “movies” web application.<br>
-        The web application provides users with access to information about different movies, directors, and genres.<br>
-        Users are able to sign up, update their personal information, and create a list of their favorite movies.
+    <h1>MyFlix API v1.0.0</h1>
+    <p>
+        The MyFlix API is built with the REST architecture in mind. This API has
+        self-explanatory URLs, returns JSON responses, and uses standard HTTP
+        response codes. <br /><br />
     </p>
-    <table>
+    <br />
+    <h2>Supported Requests</h2>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Business Logic</th>
-                <th>URL</th>
-                <th>HTTP method</th>
-                <th>Request body data format</th>
-                <th>Response body data format</th>
+                <th scope="col">Request</th>
+                <th scope="col">URL</th>
+                <th scope="col">HTTP Method</th>
+                <th scope="col">Request body data format</th>
+                <th scope="col">Response body data format</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Return a list of ALL movies to the user</td>
+                <td>Get list of movies</td>
                 <td>/movies</td>
                 <td>GET</td>
                 <td>None</td>
-                <td>A JSON object holding data about all movies</td>
-            </tr>
-            <tr>
-                <td>Return data about a single movie by title to the user</td>
-                <td>/movies/[title]</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object holding data about a single movie, containing title, year, genre,
-                    director, imgUrl, director bio.
-                    <code>{
-                        title: "The Shawshank Redemption",
-                        year: 1994,
-                        movieUrl: "https://www.themoviedb.org/movie/278-the-shawshank-redemption ",
-                        Director: {
-                          Name: "Frank Darabont",
-                          year: 1991,
-                          bio: "Frank Darabont is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-                        },
-                        genre: {
-                          Name: "Thriller",
-                          birth: 1987,
-                          bio: "Frank Darabont is a Hungarian-American film director, screenwriter, and producer. He is best known for his work in the horror genre, particularly adaptations of Stephen King's novels. Besides 'The Shawshank Redemption,' Darabont directed other acclaimed films like 'The Green Mile' and 'The Mist.'",
-                        },
-                      },
-                        </code>
+                <td>
+                    An array of JSON objects holding data about all the movies in the
+                    database
                 </td>
             </tr>
             <tr>
-                <td>Return data about a genre by name</td>
-                <td>/movies/genre/[genreName]</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object holding data about a single genre, containing genre name, description. Example:
-                    <code>
-                        genre: {
-                            Name: "Thriller",
-                            birth: 1987,
-                            bio: "Frank Darabont is a Hungarian-American film director, screenwriter, and producer. He is best known for his work in the horror genre, particularly adaptations of Stephen King's novels. Besides 'The Shawshank Redemption,' Darabont directed other acclaimed films like 'The Green Mile' and 'The Mist.'",
-                          },
-                        </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Return data about a director by name</td>
-                <td>/movies/directors/[directorName]</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object holding data about a single director, containing director name, bio, birth and death
-                    year. Example:
-                    <code>
-                        Director: {
-                            Name: "Frank Darabont",
-                            year: 1991,
-                            bio: "Frank Darabont is an American filmmaker, screenwriter, producer, and actor. He is known for his nonlinear storytelling, stylized dialogue, and eclectic film influences.",
-                          },
-                        </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Return a list of ALL users</td>
-                <td>/users</td>
+                <td>Get list of movies by director</td>
+                <td>/movies/directors/[director name]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>
-                    <code>
-                        [
-                            {
-                                "id": 1,
-                                "Name": "joe",
-                                "Favouritemovie": []
-                            },
-                            {
-                                "id": 2,
-                                "Name": "jon",
-                                "Favouritemovie": []
-                            }
-                        ]
-                    </code>
+                    An array of JSON objects holding data about all the movies by
+                    requested director
                 </td>
             </tr>
             <tr>
-                <td>Return data about a single user by username</td>
-                <td>/users/[Username]</td>
+                <td>Get list of movies by genre</td>
+                <td>/movies/genres/[genre]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>
-                    <code>
-                        {
-                            "id": 1,
-                            "Name": "joe",
-                            "Favouritemovie": []
-                        }
-                    </code>
+                    An array of JSON objects holding data about all the movies by
+                    requested genre
                 </td>
             </tr>
             <tr>
-                <td>Allow new users to register</td>
+                <td>Get data about a single movie by movieName</td>
+                <td>/movies/[movieName]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>
+                    A JSON object holding data about the requested movie like this:<br />
+                    {
+                    "genre": "Sci-Fi", <br>
+                    "director": "Steven Spielberg",<br>
+                    "movieid": "4",<br>
+                    "birthdate": "1946-12-18T00:00:00.000Z",<br>
+                    "description": "An epic science fiction adventure that transports you to new worlds.",<br>
+                    "movieName": "Echoes of Eternity",<br>
+                    "bio": "Steven Spielberg is an American film director, producer, and screenwriter. He is considered
+                    one of the founding pioneers of the New Hollywood era."<br>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Add a user</td>
                 <td>/users</td>
                 <td>POST</td>
                 <td>
-                    <code>
-                        {
-                            "name": "Mittal Malankiya",
-                            "favoriteMovies": [],
-                            "id": "3151558a-994f-4963-b8df-19120b3e00f1"
-                        }
-                    </code>
+                    A JSON object holding data about the user to add, structured
+                    like:<br /><br /> {
+                    _id: ObjectId('65cdc96e07f819554ce29be4'),<br />
+                    firstName: 'Mittal',<br />
+                    lastName: 'Malankiya',<br />
+                    email: 'm4mittal13@gmail.com',<br />
+                    password: '87hvhsc563',<br />
+                    favorite_movie: [ ObjectId('65c9fef2a71ad74d5d8083c7') ],<br />
+                    birthday: ISODate('1998-04-23T00:00:00.000Z'),<br />
+                    __v: 0
+                    }
                 </td>
                 <td>
-                    <code>
-                        {
-                            "id": 1,
-                            "Name": "joe",
-                            "Favouritemovie": []
-                        }
-                    </code>
+                    A JSON object holding data about the user that was added, including their assigned id:<br />
+                    _id: ObjectId('65cdc96e07f819554ce29be4'),<br />
+                    firstName: 'Piyush',<br />
+                    lastName: 'Malankiya',<br />
+                    email: 'm4mittal13@gmail.com',<br />
+                    password: '87hvhsc563',<br />
+                    favorite_movie: [ ObjectId('65c9fef2a71ad74d5d8083c7') ],<br />
+                    birthday: ISODate('1998-04-23T00:00:00.000Z'),<br />
+                    __v: 0
+
                 </td>
             </tr>
             <tr>
-                <td>Allow users to update their user info by Username</td>
-                <td>/users/[id]</td>
+                <td>Add a movie object to a user's favorites list</td>
+                <td>/users/[username]/movies/[movieID]</td>
                 <td>PUT</td>
-                <td>
-                    <code>
-                        {
-                            "id": 1,
-                            "Name": "joe Malankiya",
-                            "Favouritemovie": []
-                        }
-                    </code>
-                </td>
-                <td>
-                    <code>
-                        {
-                            "id": 1,
-                            "Name": "joe Malankiya",
-                            "Favouritemovie": []
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow users to add a movie to their list of favorites</td>
-                <td>/users/movies/[movieTitle]</td>
-                <td>POST</td>
                 <td>None</td>
                 <td>
-                    <p>The Godfather has been added to user 1's array</p>
+                    A text message indicating whether the movie was successfully added
+                    from the user's favorited movies
                 </td>
             </tr>
             <tr>
-                <td>Allow users to remove a movie from their list of favorites</td>
-                <td>/users/movies/[movieTitle]</td>
+                <td>Remove a movie from a user's favorites list</td>
+                <td>/users/[username]/movies/[movieID]</td>
                 <td>DELETE</td>
                 <td>None</td>
                 <td>
-                    <p>The Shawshank Redemption has been removed from user 2's array</p>
+                    A text message indicating whether the movie was successfully removed
+                    from the user's favorited movies
                 </td>
-            </tr>
-            <tr>
-                <td>Allow existing users to deregister</td>
-                <td>/users/[Username]</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>user 2 has been deleted.</td>
             </tr>
         </tbody>
     </table>
