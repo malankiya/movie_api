@@ -8,7 +8,7 @@ const uuid = require("uuid");
 
 // connection with Mongoose
 mongoose
-  .connect("mongodb://localhost:127.0.0.1/db", {
+  .connect("mongodb://localhost:27017/db", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -28,20 +28,61 @@ app.get("/users", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+// CREATE
+app.post("/users", async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ firstName: req.body.firstName });
 
-// Allow new users to register;
+    if (existingUser) {
+      return res.status(400).send(req.body.firstName + " already exists");
+    }
 
-app.post("/users", (req, res) => {
-  const newUser = req.body;
+    const newUser = await User.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      favorite_movie: [],
+      birthday: req.body.birthday,
+    });
 
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send("users need names");
+    console.log(newUser);
+
+    if (newUser) {
+      res.status(201).json(newUser);
+    } else {
+      console.error("Error creating user: newUser is falsy");
+      res.status(500).send("Error creating user");
+    }
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).send("Error creating user: " + error.message); // Log the error message
   }
 });
+// Get a user by firstName
+app.get("/users/:firstName", async (req, res) => {
+  await User.findOne({ firstName: req.params.firstName })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+// // Allow new users to register;
+
+// app.post("/users", (req, res) => {
+//   const newUser = req.body;
+
+//   if (newUser.name) {
+//     newUser.id = uuid.v4();
+//     users.push(newUser);
+//     res.status(201).json(newUser);
+//   } else {
+//     res.status(400).send("users need names");
+//   }
+// });
 
 // // update the data
 // app.put("/users/:id", (req, res) => {
@@ -156,6 +197,6 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(3000, () => {
-  console.log("Your app is listening on port 3000.");
+app.listen(8000, () => {
+  console.log("Your app is listening on port 8000.");
 });
