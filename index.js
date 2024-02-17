@@ -88,7 +88,7 @@ app.get(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await User.findOne({ Username: req.params.username })
+    await User.findOne({ username: req.params.username })
       .then((user) => {
         res.json(user);
       })
@@ -102,7 +102,7 @@ app.get(
 // CREATE
 app.post("/users", async (req, res) => {
   try {
-    const existingUser = await User.findOne({ Username: req.body.username });
+    const existingUser = await User.findOne({ username: req.body.username });
 
     if (existingUser) {
       return res.status(400).send(req.body.username + " already exists");
