@@ -142,3 +142,4 @@ app.post("/users", async (req, res) => {
 app.listen(8000, () => {
   console.log("Your app is listening on port 8000.");
 });
+console.log("hi");
