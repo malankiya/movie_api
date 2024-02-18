@@ -1,22 +1,20 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const Models = require("./models.js");
-const passportJWT = require("passport-jwt");
-
 const Users = Models.User;
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJWT;
+const JWTStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "Username",
+      usernameField: "UserName",
       passwordField: "Password",
     },
-    async (username, password, callback) => {
-      console.log(`${username} ${password}`);
+    async (userName, password, callback) => {
+      console.log(`${userName} ${password}`);
       try {
-        const user = await Users.findOne({ Username: username });
+        const user = await Users.findOne({ userName: userName });
         if (!user) {
           console.log("incorrect username");
           return callback(null, false, {
@@ -36,12 +34,12 @@ passport.use(
 passport.use(
   new JWTStrategy(
     {
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: "your_jwt_secret",
     },
     async (jwtPayload, callback) => {
       try {
-        const user = await Users.findById(jwtPayload.id);
+        const user = await Users.findById(jwtPayload.id); // Use jwtPayload.Id if your payload has "Id"
         return callback(null, user);
       } catch (error) {
         return callback(error);

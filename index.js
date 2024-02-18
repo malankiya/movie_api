@@ -85,10 +85,10 @@ app.put("/users/:_id", async (req, res) => {
 
 // Get a user by firstName
 app.get(
-  "/users/:username",
+  "/users/:userName",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await User.findOne({ username: req.params.username })
+    await User.findOne({ userName: req.params.userName })
       .then((user) => {
         res.json(user);
       })
@@ -102,14 +102,14 @@ app.get(
 // CREATE
 app.post("/users", async (req, res) => {
   try {
-    const existingUser = await User.findOne({ username: req.body.username });
+    const existingUser = await User.findOne({ userName: req.body.userName });
 
     if (existingUser) {
-      return res.status(400).send(req.body.username + " already exists");
+      return res.status(400).send(req.body.userName + " already exists");
     }
 
     const newUser = await User.create({
-      username: req.body.username,
+      userName: req.body.userName,
       password: req.body.password,
       email: req.body.email,
       birthday: req.body.birthday,
