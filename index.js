@@ -46,130 +46,154 @@ app.get(
   }
 );
 // Add a movie to a user's list of favorites
-app.post("/users/:firstName/movies/:movieid", async (req, res) => {
-  await User.findOneAndUpdate(
-    { firstName: req.params.firstName },
-    {
-      $push: { favorite_movie: req.params.movieid },
-    },
-    { new: true }
-  ) // This line makes sure that the updated document is returned
-    .then((updatedUser) => {
-      res.json(updatedUser);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error:" + err);
-    });
-});
-// Return data about a director
-app.get("/directors/:directorName", async (req, res) => {
-  const { directorName } = req.params;
-
-  try {
-    const movie = await Movie.findOne(
-      { director: directorName },
-      "director birthdate bio"
-    );
-
-    if (movie) {
-      res.json({
-        director: movie.director,
-        birthdate: movie.birthdate,
-        bio: movie.bio,
-      });
-    } else {
-      res.status(404).send("Director not found");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-// get description by genreName
-app.get("/movies/genre/:genreName", async (req, res) => {
-  const { genreName } = req.params;
-
-  try {
-    const movie = await Movie.findOne(
-      { genre: genreName },
-      "genre description"
-    );
-
-    if (movie) {
-      res.json({ genre: movie.genre, description: movie.description });
-    } else {
-      res.status(404).send("Genre not found");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-// get single movie by movieName
-app.get("/movies/:movieName", async (req, res) => {
-  const { movieName } = req.params;
-
-  try {
-    const movie = await Movie.findOne({ movieName: movieName });
-
-    if (movie) {
-      const movieData = {
-        genre: movie.genre,
-        director: movie.director,
-        movieid: movie.movieid,
-        birthdate: movie.birthdate,
-        description: movie.description,
-        movieName: movie.movieName,
-        bio: movie.bio,
-      };
-
-      res.json(movieData);
-    } else {
-      res.status(404).send("Movie not found");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-// READ user list
-app.get("/users", async (req, res) => {
-  await User.find()
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
-
-// Update
-app.put("/users/:_id", async (req, res) => {
-  try {
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: req.params._id },
+app.post(
+  "/users/:firstName/movies/:movieid",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await User.findOneAndUpdate(
+      { firstName: req.params.firstName },
       {
-        $set: {
-          email: req.body.email,
-        },
+        $push: { favorite_movie: req.params.movieid },
       },
       { new: true }
-    );
-
-    if (updatedUser) {
-      res.json(updatedUser);
-    } else {
-      res.status(404).send("User not found");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error: " + error.message);
-    console.log("no updation");
+    ) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error:" + err);
+      });
   }
-});
+);
+// Return data about a director
+app.get(
+  "/directors/:directorName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { directorName } = req.params;
+
+    try {
+      const movie = await Movie.findOne(
+        { director: directorName },
+        "director birthdate bio"
+      );
+
+      if (movie) {
+        res.json({
+          director: movie.director,
+          birthdate: movie.birthdate,
+          bio: movie.bio,
+        });
+      } else {
+        res.status(404).send("Director not found");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+// get description by genreName
+app.get(
+  "/movies/genre/:genreName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { genreName } = req.params;
+
+    try {
+      const movie = await Movie.findOne(
+        { genre: genreName },
+        "genre description"
+      );
+
+      if (movie) {
+        res.json({ genre: movie.genre, description: movie.description });
+      } else {
+        res.status(404).send("Genre not found");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+// get single movie by movieName
+app.get(
+  "/movies/:movieName",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { movieName } = req.params;
+
+    try {
+      const movie = await Movie.findOne({ movieName: movieName });
+
+      if (movie) {
+        const movieData = {
+          genre: movie.genre,
+          director: movie.director,
+          movieid: movie.movieid,
+          birthdate: movie.birthdate,
+          description: movie.description,
+          movieName: movie.movieName,
+          bio: movie.bio,
+        };
+
+        res.json(movieData);
+      } else {
+        res.status(404).send("Movie not found");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+// READ user list
+app.get(
+  "/users",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await User.find()
+      .then((users) => {
+        res.status(201).json(users);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
+// Update
+app.put(
+  "/users/:_id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.params._id },
+        {
+          $set: {
+            email: req.body.email,
+          },
+        },
+        { new: true }
+      );
+
+      if (updatedUser) {
+        res.json(updatedUser);
+      } else {
+        res.status(404).send("User not found");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+      console.log("no updation");
+    }
+  }
+);
 
 // Get a user by firstName
 app.get(
