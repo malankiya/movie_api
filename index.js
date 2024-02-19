@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const express = require("express");
 const app = express();
-
 //Import auth.js
-let auth = require("./auth");
+let auth = require("./auth")(app);
 
 app.use(express.urlencoded({ extended: true }));
+
 // app.use(bodyParser.urlencoded({ extended: true }));
 
 // Import passport and passport.js

@@ -13,13 +13,16 @@ let generateJWTToken = (user) => {
     });
   } catch (error) {
     console.error("Error generating JWT token:", error);
-    throw error; // Rethrow the error for better debugging
+    throw error;
   }
 };
 
 module.exports = (router) => {
+  console.log("Router Login");
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
+      console.log(info);
+      console.log(user);
       if (error || !user) {
         console.error("Authentication error:", error || "User not found");
         return res.status(400).json({
