@@ -131,15 +131,14 @@ app.post("/users", async (req, res) => {
 });
 
 // // // // Error-handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
 
-//   //   //   Respond with a generic error message
-//   res.status(500).send("Something went wrong!");
-// });
+  //   //   //   Respond with a generic error message
+  res.status(500).send("Something went wrong!");
+});
 
 // listen for requests
 app.listen(8000, () => {
   console.log("Your app is listening on port 8000.");
 });
-console.log("hi");

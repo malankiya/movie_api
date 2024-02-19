@@ -7,7 +7,7 @@ require("./passport");
 let generateJWTToken = (user) => {
   try {
     return jwt.sign(user, jwtSecret, {
-      subject: user.Username,
+      subject: user.userName,
       expiresIn: "7d",
       algorithm: "HS256",
     });
@@ -24,7 +24,7 @@ module.exports = (router) => {
         console.error("Authentication error:", error || "User not found");
         return res.status(400).json({
           message: "Something is not right",
-          user: user,
+          error: error || "User not found",
         });
       }
 

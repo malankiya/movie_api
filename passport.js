@@ -1,49 +1,54 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const Models = require("./models.js");
-const Users = Models.User;
-const JWTStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
+const passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy,
+  Models = require("./models.js"),
+  passportJWT = require("passport-jwt");
+
+let Users = Models.User,
+  JWTStrategy = passportJWT.Strategy,
+  ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "UserName",
-      passwordField: "Password",
+      usernameField: "userName",
+      passwordField: "password",
     },
-    async (userName, password, callback) => {
-      console.log(`${userName} ${password}`);
-      try {
-        const user = await Users.findOne({ userName: userName });
-        if (!user) {
-          console.log("incorrect username");
-          return callback(null, false, {
-            message: "Incorrect username or password.",
-          });
-        }
-        console.log("finished");
-        return callback(null, user);
-      } catch (error) {
-        console.log(error);
-        return callback(error);
-      }
+    async (username, password, callback) => {
+      console.log(`${username} ${password}`);
+      await Users.findOne({ userName: username })
+        .then((user) => {
+          if (!user) {
+            console.log("incorrect userName");
+            return callback(null, false, {
+              message: "Incorrect userName or password.",
+            });
+          }
+          console.log("finished");
+          return callback(null, user);
+        })
+        .catch((error) => {
+          if (error) {
+            console.log(error);
+            return callback(error);
+          }
+        });
     }
   )
 );
-
 passport.use(
   new JWTStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: "your_jwt_secret",
     },
     async (jwtPayload, callback) => {
-      try {
-        const user = await Users.findById(jwtPayload.id); // Use jwtPayload.Id if your payload has "Id"
-        return callback(null, user);
-      } catch (error) {
-        return callback(error);
-      }
+      return await Users.findById(jwtPayload._id)
+        .then((user) => {
+          return callback(null, user);
+        })
+        .catch((error) => {
+          return callback(error);
+        });
     }
   )
 );
