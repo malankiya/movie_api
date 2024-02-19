@@ -45,6 +45,94 @@ app.get(
       });
   }
 );
+// Add a movie to a user's list of favorites
+app.post("/users/:firstName/movies/:movieid", async (req, res) => {
+  await User.findOneAndUpdate(
+    { firstName: req.params.firstName },
+    {
+      $push: { favorite_movie: req.params.movieid },
+    },
+    { new: true }
+  ) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error:" + err);
+    });
+});
+// Return data about a director
+app.get("/directors/:directorName", async (req, res) => {
+  const { directorName } = req.params;
+
+  try {
+    const movie = await Movie.findOne(
+      { director: directorName },
+      "director birthdate bio"
+    );
+
+    if (movie) {
+      res.json({
+        director: movie.director,
+        birthdate: movie.birthdate,
+        bio: movie.bio,
+      });
+    } else {
+      res.status(404).send("Director not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+// get description by genreName
+app.get("/movies/genre/:genreName", async (req, res) => {
+  const { genreName } = req.params;
+
+  try {
+    const movie = await Movie.findOne(
+      { genre: genreName },
+      "genre description"
+    );
+
+    if (movie) {
+      res.json({ genre: movie.genre, description: movie.description });
+    } else {
+      res.status(404).send("Genre not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+// get single movie by movieName
+app.get("/movies/:movieName", async (req, res) => {
+  const { movieName } = req.params;
+
+  try {
+    const movie = await Movie.findOne({ movieName: movieName });
+
+    if (movie) {
+      const movieData = {
+        genre: movie.genre,
+        director: movie.director,
+        movieid: movie.movieid,
+        birthdate: movie.birthdate,
+        description: movie.description,
+        movieName: movie.movieName,
+        bio: movie.bio,
+      };
+
+      res.json(movieData);
+    } else {
+      res.status(404).send("Movie not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 // READ user list
 app.get("/users", async (req, res) => {
@@ -127,6 +215,24 @@ app.post("/users", async (req, res) => {
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).send("Error creating user: " + error.message); // Log the error message
+  }
+});
+
+// Delete a user by username
+app.delete("/users/:firstName", async (req, res) => {
+  try {
+    const deletedUser = await User.findOneAndDelete({
+      firstName: req.params.firstName,
+    });
+
+    if (!deletedUser) {
+      res.status(400).send(req.params.firstName + " was not found");
+    } else {
+      res.status(200).send(req.params.firstName + " was deleted.");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error: " + err);
   }
 });
 
