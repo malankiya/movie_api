@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Models = require("./models.js");
+const { check, validationResult } = require("express-validator");
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -238,36 +239,55 @@ app.get(
 );
 
 // CREATE
-app.post("/users", async (req, res) => {
-  try {
-    let hashedPassword = User.hashPassword(req.body.password);
-    const existingUser = await User.findOne({ userName: req.body.userName });
+app.post(
+  "/users",
+  [
+    check("userName", "Username is required").isLength({ min: 7 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("password", "Password is required").not().isEmpty(),
+    check("email", "Email does not appear to be valid").isEmail(),
+  ],
+  async (req, res) => {
+    try {
+      // check the validation object for errors
+      let errors = validationResult(req);
 
-    if (existingUser) {
-      return res.status(400).send(req.body.userName + " already exists");
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
+
+      let hashedPassword = User.hashPassword(req.body.password);
+      const existingUser = await User.findOne({ userName: req.body.userName });
+
+      if (existingUser) {
+        return res.status(400).send(req.body.userName + " already exists");
+      }
+
+      const newUser = await User.create({
+        userName: req.body.userName,
+        password: req.body.password,
+        email: req.body.email,
+        birthday: req.body.birthday,
+        favoritemovie: [],
+      });
+
+      console.log(newUser);
+
+      if (newUser) {
+        res.status(201).json(newUser);
+      } else {
+        console.error("Error creating user: newUser is falsy");
+        res.status(500).send("Error creating user");
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      res.status(500).send("Error creating user: " + error.message); // Log the error message
     }
-
-    const newUser = await User.create({
-      userName: req.body.userName,
-      password: req.body.password,
-      email: req.body.email,
-      birthday: req.body.birthday,
-      favoritemovie: [],
-    });
-
-    console.log(newUser);
-
-    if (newUser) {
-      res.status(201).json(newUser);
-    } else {
-      console.error("Error creating user: newUser is falsy");
-      res.status(500).send("Error creating user");
-    }
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).send("Error creating user: " + error.message); // Log the error message
   }
-});
+);
 
 // Delete a user by username
 app.delete("/users/:userName", async (req, res) => {
@@ -296,6 +316,7 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(8000, () => {
-  console.log("Your app is listening on port 8000.");
+const port = process.env.PORT || 8000;
+app.listen(port, "0.0.0.0", () => {
+  console.log("Listening on Port " + port);
 });
