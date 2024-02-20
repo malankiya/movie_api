@@ -3,6 +3,8 @@ const Models = require("./models.js");
 const express = require("express");
 const app = express();
 app.use(express.json());
+const cors = require("cors");
+app.use(cors());
 //Import auth.js
 let auth = require("./auth")(app);
 
