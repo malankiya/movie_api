@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const express = require("express");
 const app = express();
+app.use(express.json());
 //Import auth.js
 let auth = require("./auth")(app);
 
@@ -47,11 +48,11 @@ app.get(
 );
 // Add a movie to a user's list of favorites
 app.post(
-  "/users/:firstName/movies/:movieid",
+  "/users/:userName/movies/:movieid",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     await User.findOneAndUpdate(
-      { firstName: req.params.firstName },
+      { userName: req.params.userName },
       {
         $push: { favorite_movie: req.params.movieid },
       },
@@ -243,16 +244,16 @@ app.post("/users", async (req, res) => {
 });
 
 // Delete a user by username
-app.delete("/users/:firstName", async (req, res) => {
+app.delete("/users/:userName", async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({
-      firstName: req.params.firstName,
+      userName: req.params.userName,
     });
 
     if (!deletedUser) {
-      res.status(400).send(req.params.firstName + " was not found");
+      res.status(400).send(req.params.userName + " was not found");
     } else {
-      res.status(200).send(req.params.firstName + " was deleted.");
+      res.status(200).send(req.params.userName + " was deleted.");
     }
   } catch (err) {
     console.error(err);
