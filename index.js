@@ -11,6 +11,7 @@ let allowedOrigins = [
   "http://localhost:8080",
   "http://testsite.com",
   "http://localhost:8000",
+  "https://myflixapp-cw0r.onrender.com",
 ];
 
 app.use(
@@ -242,7 +243,7 @@ app.get(
 app.post(
   "/users",
   [
-    check("userName", "Username is required").isLength({ min: 7 }),
+    check("userName", "Username is required").isLength({ min: 5 }),
     check(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
