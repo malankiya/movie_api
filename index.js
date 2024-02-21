@@ -48,7 +48,7 @@ const uuid = require("uuid");
 const CONNECTION_URI =
   "mongodb+srv://myFlixDB:myFlixDB123@cluster0.uv03d6o.mongodb.net/movieAPI";
 mongoose
-  .connect(CONNECTION_URI, {
+  .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
