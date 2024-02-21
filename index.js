@@ -66,7 +66,9 @@ mongoose
 // Import Mongoose models
 const User = Models.User;
 const Movie = Models.Movie;
-
+app.get("/", (req, res) => {
+  res.json("hello my FlixAPI");
+});
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
