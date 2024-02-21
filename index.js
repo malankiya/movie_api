@@ -10,6 +10,7 @@ app.use(cors());
 let allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:8000",
+  "https://myflixapp-cw0r.onrender.com",
   "https://mittal-malankiya-movie-api.onrender.com",
 ];
 
@@ -44,10 +45,10 @@ require("./passport");
 app.use(express.static("public"));
 
 const uuid = require("uuid");
-let CONNECTION_URI = "123";
-// connection with Mongoose
+const CONNECTION_URI =
+  "mongodb+srv://myFlixDB:myFlixDB123@cluster0.uv03d6o.mongodb.net/movieAPI";
 mongoose
-  .connect("process.env.CONNECTION_URI", {
+  .connect(CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
