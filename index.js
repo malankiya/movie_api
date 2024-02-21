@@ -9,9 +9,8 @@ app.use(cors());
 
 let allowedOrigins = [
   "http://localhost:8080",
-  "http://testsite.com",
   "http://localhost:8000",
-  "https://myflixapp-cw0r.onrender.com",
+  "https://mittal-malankiya-movie-api.onrender.com",
 ];
 
 app.use(
@@ -45,15 +44,24 @@ require("./passport");
 app.use(express.static("public"));
 
 const uuid = require("uuid");
-
+let CONNECTION_URI = "123";
 // connection with Mongoose
 mongoose
-  .connect("mongodb://localhost:27017/db", {
+  .connect("process.env.CONNECTION_URI", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("Mongo Error", err));
+
+// // connection with Mongoose
+// mongoose
+//   .connect("mongodb://localhost:27017/db", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB Connected"))
+//   .catch((err) => console.log("Mongo Error", err));
 
 // Import Mongoose models
 const User = Models.User;
