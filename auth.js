@@ -1,20 +1,15 @@
-const jwtSecret = "your_jwt_secret";
+const jwtSecret = process.env.secretKey;
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 require("./passport");
 
 let generateJWTToken = (user) => {
-  try {
-    return jwt.sign(user, jwtSecret, {
-      subject: user.userName,
-      expiresIn: "30d",
-      algorithm: "HS256",
-    });
-  } catch (error) {
-    console.error("Error generating JWT token:", error);
-    throw error;
-  }
+  return jwt.sign(user, jwtSecret, {
+    subject: user.userName,
+    expiresIn: "30d",
+    algorithm: "HS256",
+  });
 };
 
 module.exports = (router) => {
@@ -33,17 +28,10 @@ module.exports = (router) => {
 
       req.login(user, { session: false }, (error) => {
         if (error) {
-          console.error("Login error:", error);
           res.send(error);
         }
-
-        try {
-          let token = generateJWTToken(user.toJSON());
-          return res.json({ user, token });
-        } catch (tokenError) {
-          console.error("Token generation error:", tokenError);
-          res.status(500).send("Error generating JWT token");
-        }
+        let token = generateJWTToken(user.toJSON());
+        return res.json({ user, token });
       });
     })(req, res);
   });

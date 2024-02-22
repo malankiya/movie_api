@@ -11,7 +11,6 @@ let allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:8000",
   "https://myflixapp-cw0r.onrender.com",
-  "https://mittal-malankiya-movie-api.onrender.com",
 ];
 
 app.use(
@@ -48,7 +47,7 @@ const uuid = require("uuid");
 const Myflix =
   "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
 mongoose
-  .connect(Myflix, {
+  .connect(process.env.Myflix, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
