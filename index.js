@@ -45,10 +45,10 @@ require("./passport");
 app.use(express.static("public"));
 
 const uuid = require("uuid");
-const CONNECTION_URI =
-  "mongodb+srv://myFlixDB:myFlixDB123@cluster0.uv03d6o.mongodb.net/movieAPI";
+const Myflix =
+  "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
 mongoose
-  .connect(process.env.CONNECTION_URI, {
+  .connect(Myflix, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
