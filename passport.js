@@ -6,7 +6,7 @@ const passport = require("passport"),
 let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
-const jwtSecret = process.env.secretKey;
+// const jwtSecret = process.env.secretKey;
 
 passport.use(
   new LocalStrategy(
@@ -40,22 +40,22 @@ passport.use(
     }
   )
 );
-//Authenticate users based on JWT submitted with their request.
-passport.use(
-  new JWTStrategy(
-    {
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //JWT is extracted from HTTP request header
-      secretOrKey: jwtSecret, //use secret key to verify signature of the JWT (ensure client is who it says it is and JWT hasn't been altered)
-    },
-    async (jwtPayload, callback) => {
-      //take the object literal of the decoded JWT payload as a parameter
-      return await Users.findById(jwtPayload._id)
-        .then((user) => {
-          return callback(null, user);
-        })
-        .catch((error) => {
-          return callback(error);
-        });
-    }
-  )
-);
+// //Authenticate users based on JWT submitted with their request.
+// passport.use(
+//   new JWTStrategy(
+//     {
+//       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //JWT is extracted from HTTP request header
+//       secretOrKey: jwtSecret, //use secret key to verify signature of the JWT (ensure client is who it says it is and JWT hasn't been altered)
+//     },
+//     async (jwtPayload, callback) => {
+//       //take the object literal of the decoded JWT payload as a parameter
+//       return await Users.findById(jwtPayload._id)
+//         .then((user) => {
+//           return callback(null, user);
+//         })
+//         .catch((error) => {
+//           return callback(error);
+//         });
+//     }
+//   )
+// );

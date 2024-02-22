@@ -48,7 +48,7 @@ const uuid = require("uuid");
 const Myflix =
   "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
 mongoose
-  .connect(process.env.Myflix, {
+  .connect(Myflix, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
