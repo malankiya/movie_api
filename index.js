@@ -56,13 +56,13 @@ mongoose
   .catch((err) => console.log("Mongo Error", err));
 
 // // connection with Mongoose
-mongoose
-  .connect("mongodb://localhost:27017/db", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("Mongo Error", err));
+// mongoose
+//   .connect("mongodb://localhost:27017/db", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB Connected"))
+//   .catch((err) => console.log("Mongo Error", err));
 
 // Import Mongoose models
 const User = Models.User;
@@ -254,13 +254,13 @@ app.get(
 app.post(
   "/users",
   [
-    check("userName", "Username is required").isLength({ min: 5 }),
+    check("userName", "userName is required").isLength({ min: 5 }),
     check(
-      "Username",
-      "Username contains non alphanumeric characters - not allowed."
+      "userName",
+      "userName contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
-    check("password", "Password is required").not().isEmpty(),
-    check("email", "Email does not appear to be valid").isEmail(),
+    check("password", "password is required").not().isEmpty(),
+    check("email", "email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
     try {

@@ -8,7 +8,7 @@ let generateJWTToken = (user) => {
   try {
     return jwt.sign(user, jwtSecret, {
       subject: user.userName,
-      expiresIn: "7d",
+      expiresIn: "30d",
       algorithm: "HS256",
     });
   } catch (error) {
