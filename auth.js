@@ -8,15 +8,12 @@ if (!jwtSecret) {
   process.exit(1); // Exit the application if the secret key is not defined.
 }
 
-console.log("jwtSecret", jwtSecret);
-
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 require("./passport");
 
 function generateJWTToken(user) {
-  console.log("jwtSecret:", jwtSecret);
   return jwt.sign(user, jwtSecret, {
     subject: user.userName,
     expiresIn: "15d",
@@ -25,11 +22,8 @@ function generateJWTToken(user) {
 }
 
 module.exports = (router) => {
-  console.log("Router Login");
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
-      console.log(info);
-      console.log(user);
       if (error || !user) {
         console.error("Authentication error:", error || "User not found");
         return res.status(400).json({

@@ -45,8 +45,7 @@ require("./passport");
 app.use(express.static("public"));
 
 const uuid = require("uuid");
-// const CONNECTION_URI =
-//   "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
+
 mongoose
   .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
@@ -210,12 +209,16 @@ app.put(
   "/users/:_id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    let hashedPassword = User.hashPassword(req.body.password);
     try {
       const updatedUser = await User.findOneAndUpdate(
         { _id: req.params._id },
         {
           $set: {
+            userName: req.body.userName,
             email: req.body.email,
+            password: hashedPassword,
+            birthday: req.body.birthday,
           },
         },
         { new: true }
@@ -285,8 +288,6 @@ app.post(
         birthday: req.body.birthday,
         favoritemovie: [],
       });
-
-      console.log(newUser);
 
       if (newUser) {
         res.status(201).json(newUser);
