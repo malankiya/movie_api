@@ -29,6 +29,7 @@ module.exports = (router) => {
         return res.status(400).json({
           message: "Something is not right",
           error: error || "User not found",
+          user: user,
         });
       }
 

@@ -35,7 +35,6 @@ let movieSchema = mongoose.Schema({
 
 let userSchema = mongoose.Schema({
   // Defining the Schema
-
   userName: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
@@ -48,7 +47,7 @@ userSchema.statics.hashPassword = (password) => {
 };
 
 userSchema.methods.validatePassword = function (password) {
-  return bcrypt.compareSync(password, this.Password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 let Movie = mongoose.model("Movie", movieSchema);

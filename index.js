@@ -283,7 +283,7 @@ app.post(
 
       const newUser = await User.create({
         userName: req.body.userName,
-        password: req.body.password,
+        password: hashedPassword,
         email: req.body.email,
         birthday: req.body.birthday,
         favoritemovie: [],
