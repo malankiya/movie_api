@@ -1,5 +1,5 @@
 
 .gitignore.log
 node_modules
-
+.env
 node-js-getting-started/

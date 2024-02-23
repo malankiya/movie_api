@@ -1,4 +1,6 @@
-const jwtSecret = process.env.secretKey;
+require("dotenv").config();
+
+const jwtSecret = process.env.SECRET_KEY;
 
 // // Check if the secretKey is defined
 if (!jwtSecret) {
@@ -6,19 +8,21 @@ if (!jwtSecret) {
   process.exit(1); // Exit the application if the secret key is not defined.
 }
 
+console.log("jwtSecret", jwtSecret);
+
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 require("./passport");
 
-let generateJWTToken = (user) => {
-  // console.log("jwtSecret:", jwtSecret);
+function generateJWTToken(user) {
+  console.log("jwtSecret:", jwtSecret);
   return jwt.sign(user, jwtSecret, {
     subject: user.userName,
     expiresIn: "15d",
     algorithm: "HS256",
   });
-};
+}
 
 module.exports = (router) => {
   console.log("Router Login");

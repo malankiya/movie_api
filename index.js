@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Models = require("./models.js");
+require("dotenv").config();
 const { check, validationResult } = require("express-validator");
 const express = require("express");
 const app = express();
