@@ -44,13 +44,16 @@ require("./passport");
 app.use(express.static("public"));
 
 const uuid = require("uuid");
-const Myflix =
-  "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
+// const CONNECTION_URI =
+//   "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
 mongoose
-  .connect(process.env.Myflix, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("Mongo Error", err));
 
