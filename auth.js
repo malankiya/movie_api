@@ -1,10 +1,18 @@
 const jwtSecret = process.env.secretKey;
+
+// // Check if the secretKey is defined
+if (!jwtSecret) {
+  console.error("Error: secretKey not defined.");
+  process.exit(1); // Exit the application if the secret key is not defined.
+}
+
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 require("./passport");
 
 let generateJWTToken = (user) => {
+  // console.log("jwtSecret:", jwtSecret);
   return jwt.sign(user, jwtSecret, {
     subject: user.userName,
     expiresIn: "15d",
