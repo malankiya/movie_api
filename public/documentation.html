@@ -7,172 +7,386 @@
     <title>Movie API Documentation</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 2rem;
+            background-color: #f8f8f8;
+            color: #444;
+            line-height: 1.6;
         }
 
-        h1 {
-            color: #333;
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
         }
 
         p {
-            color: #555;
-            font-weight: 700;
-            text-decoration: dotted;
+            color: #666;
+            font-weight: 500;
+            line-height: 1.4;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1.5rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         th,
         td {
-            border: 1px solid #00ced1;
-            padding: 8px;
+            border: 1px solid #ecf0f1;
+            padding: 12px;
             text-align: left;
         }
 
         th {
-            background-color: #b2f0f1;
+            background-color: #3498db;
+            color: #fff;
         }
 
         tr:nth-child(even) {
-            background-color: #b2f0f1;
+            background-color: #ecf0f1;
         }
 
         code {
-            /* background-color: #b2f0f1; */
-            padding: 2px;
+            background-color: #ecf0f1;
+            padding: 4px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-family: Consolas, monospace;
+            font-family: 'Consolas', monospace;
         }
     </style>
 </head>
 
 <body>
-    <h1>MyFlix API v1.0.0</h1>
-    <p>
-        The MyFlix API is built with the REST architecture in mind. This API has
-        self-explanatory URLs, returns JSON responses, and uses standard HTTP
-        response codes. <br /><br />
-    </p>
-    <br />
-    <h2>Supported Requests</h2>
-    <table class="table table-striped">
+    <h1 id="pageTop">movie_api Documentation</h1>
+    <h2>What does the movie_api do?</h2>
+    <p>This REST API is the server-side component of the movie_api web application. The API (still in progress!) will
+        provide users with access to information about different horror movies, directors, and genres. Users will be
+        able to sign up, update their personal information, and create a list of their favorite scary movies. </p>
+    <h2>Endpoints Overview</h2>
+    <p>Click on a Request to get more details and examples.</p>
+    <table>
         <thead>
             <tr>
-                <th scope="col">Request</th>
-                <th scope="col">URL</th>
-                <th scope="col">HTTP Method</th>
-                <th scope="col">Request body data format</th>
-                <th scope="col">Response body data format</th>
+                <th>Request</th>
+                <th>Method</th>
+                <th>URL/Endpoint</th>
+                <th>Response</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Get list of movies</td>
+                <td><a href="#allMovies">Return a list of all movies</a></td>
+                <td>GET</td>
                 <td>/movies</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    An array of JSON objects holding data about all the movies in the
-                    database
-                </td>
+                <td>JSON object with details for all movies: movieName, Description, Director, Genre</td>
             </tr>
             <tr>
-                <td>Get list of movies by director</td>
-                <td>/movies/directors/[director name]</td>
+                <td><a href="#singleMovie">Return data about a single movie by title</a></td>
                 <td>GET</td>
-                <td>None</td>
-                <td>
-                    An array of JSON objects holding data about all the movies by
-                    requested director
-                </td>
+                <td>/movies/:movieName</td>
+                <td>JSON object with single movie details: movieName, Description, Director, Genre</td>
             </tr>
             <tr>
-                <td>Get list of movies by genre</td>
-                <td>/movies/genres/[genre]</td>
+                <td><a href="#genre">Return data about a genre by name</a></td>
                 <td>GET</td>
-                <td>None</td>
-                <td>
-                    An array of JSON objects holding data about all the movies by
-                    requested genre
-                </td>
+                <td>/movies/genre/:genreName</td>
+                <td>JSON object with genre name and description</td>
             </tr>
             <tr>
-                <td>Get data about a single movie by movieName</td>
-                <td>/movies/[movieName]</td>
+                <td><a href="#director">Return data about a director by name</a></td>
                 <td>GET</td>
-                <td>None</td>
-                <td>
-                    A JSON object holding data about the requested movie like this:<br />
-                    {
-                    "genre": "Sci-Fi", <br>
-                    "director": "Steven Spielberg",<br>
-                    "movieid": "4",<br>
-                    "birthdate": "1946-12-18T00:00:00.000Z",<br>
-                    "description": "An epic science fiction adventure that transports you to new worlds.",<br>
-                    "movieName": "Echoes of Eternity",<br>
-                    "bio": "Steven Spielberg is an American film director, producer, and screenwriter. He is considered
-                    one of the founding pioneers of the New Hollywood era."<br>
-                    }
-                </td>
+                <td>/movies/director/:directorName</td>
+                <td>JSON object with director details: Name, Bio, Birth Year, and Death Year (if applicable)</td>
             </tr>
             <tr>
-                <td>Add a user</td>
-                <td>/users</td>
+                <td><a href="#newUser">Allow new users to register</a></td>
                 <td>POST</td>
-                <td>
-                    A JSON object holding data about the user to add, structured
-                    like:<br /><br /> {
-                    _id: ObjectId('65cdc96e07f819554ce29be4'),<br />
-                    firstName: 'Mittal',<br />
-                    lastName: 'Malankiya',<br />
-                    email: 'm4mittal13@gmail.com',<br />
-                    password: '87hvhsc563',<br />
-                    favorite_movie: [ ObjectId('65c9fef2a71ad74d5d8083c7') ],<br />
-                    birthday: ISODate('1998-04-23T00:00:00.000Z'),<br />
-                    __v: 0
-                    }
-                </td>
-                <td>
-                    A JSON object holding data about the user that was added, including their assigned id:<br />
-                    _id: ObjectId('65cdc96e07f819554ce29be4'),<br />
-                    firstName: 'Piyush',<br />
-                    lastName: 'Malankiya',<br />
-                    email: 'm4mittal13@gmail.com',<br />
-                    password: '87hvhsc563',<br />
-                    favorite_movie: [ ObjectId('65c9fef2a71ad74d5d8083c7') ],<br />
-                    birthday: ISODate('1998-04-23T00:00:00.000Z'),<br />
-                    __v: 0
-
-                </td>
+                <td>/users</td>
+                <td>JSON object with user details: Username, Password, Email, Birthday, id</td>
             </tr>
             <tr>
-                <td>Add a movie object to a user's favorites list</td>
-                <td>/users/[username]/movies/[movieID]</td>
+                <td><a href="#userUpdate">Allow users to update their details</a></td>
                 <td>PUT</td>
-                <td>None</td>
-                <td>
-                    A text message indicating whether the movie was successfully added
-                    from the user's favorited movies
-                </td>
+                <td>/users/:Username</td>
+                <td>JSON object with user details: Username, Password, Email, Birthday, FavoriteMovies, id</td>
             </tr>
             <tr>
-                <td>Remove a movie from a user's favorites list</td>
-                <td>/users/[username]/movies/[movieID]</td>
+                <td><a href="#movieFavorite">Allow users to add movie to their list of favorites</a></td>
+                <td>POST</td>
+                <td>/users/:Username/movies/:MovieID</td>
+                <td>JSON object with user details: Username, Password, Email, Birthday, FavoriteMovies, id</td>
+            </tr>
+            <tr>
+                <td><a href="#movieUnfavorite">Allow users to remove movie to their list of favorites</a></td>
                 <td>DELETE</td>
-                <td>None</td>
-                <td>
-                    A text message indicating whether the movie was successfully removed
-                    from the user's favorited movies
-                </td>
+                <td>/users/:Username/movies/:MovieID</td>
+                <td>JSON object with user details: Username, Password, Email, Birthday, FavoriteMovies, id</td>
+            </tr>
+            <tr>
+                <td><a href="#deleteUser">Allow existing users to deregister</a></td>
+                <td>DELETE</td>
+                <td>/users/:Username</td>
+                <td>Text message confirming the user has been deleted</td>
             </tr>
         </tbody>
     </table>
+    <h2>Endpoints Explained</h2>
+    <h3 id="allMovies">Return a list of all movies</h3>
+    <ul>
+        <li>Description: This endpoint returns a list of all movies in the database, complete with a Title, Description,
+            Director, Genre, Image and Featured.</li>
+        <li>URL: /movies</li>
+        <li>Method: GET</li>
+        <li>Query Parameters: none</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing details for all movies in the database. Details include movieName,
+            Description, Director (name, bio, birthday), Genre (name, description).
+        </li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                    [
+                    {<br>
+                      "_id": "65c9fef2a71ad74d5d8083c5",<br>
+                      "genre": "Thriller",<br>
+                      "director": "David Fincher",<br>
+                      "movieid": "7",<br>
+                      "birthdate": "ISODate('1962-08-28T00:00:00.000Z')",<br>
+                      "description": "A pulse-pounding thriller that will keep you guessing until the very end.",<br>
+                      "movieName": 'Beyond the Horizon',<br>
+                      "bio": "David Fincher is an American film director and producer. He is known for his dark and stylish thrillers, including 'Se7en' and 'Fight Club'.",<br>
+                    }<br>,
+                    {<br>
+                      "_id": "65c9fef1a71ad74d5d8083c3",<br>
+                      "genre": "Horror",<br>
+                      "director": "James Wan",<br>
+                      "movieid": "5",<br>
+                      "birthdate": "ISODate('1977-02-27T00:00:00.000Z')",<br>
+                      "description": "A spine-chilling horror film that will leave you on the edge of your seat.",<br>
+                      "movieName": 'The Forgotten Kingdom',<br>
+                      "bio": 'James Wan is a Malaysian-Australian film director, screenwriter, and producer. He is best known for his work in the horror genre.'<br>
+                    }<br>
+                                               ]
+                            </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="singleMovie">Return data about a single movie by title</h3>
+    <ul>
+        <li>Description: This endpoint returns the details for a single movie in the database, complete with the Title,
+            Description, Director, Genre.</li>
+        <li>URL: /movies/:movieName</li>
+        <li>Method: GET</li>
+        <li>Query Parameters: :movieName</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing details for the movie. Details include movieName, Description,
+            Director
+            (name, bio), Genre (name, description).</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                                {<br>
+                                    "_id": "65c9fef1a71ad74d5d8083c3",<br>
+                                    "genre": "Horror",<br>
+                                    "director": "James Wan",<br>
+                                    "movieid": "5",<br>
+                                    "birthdate": "ISODate('1977-02-27T00:00:00.000Z')",<br>
+                                    "description": "A spine-chilling horror film that will leave you on the edge of your seat.",<br>
+                                    "movieName": 'The Forgotten Kingdom',<br>
+                                    "bio": 'James Wan is a Malaysian-Australian film director, screenwriter, and producer. He is best known for his work in the horror genre.'<br>
+                                  }<br>                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="genre">Return data about a genre by name</h3>
+    <ul>
+        <li>Description: This endpoint returns the details for a movie genre in the database, complete with the name and
+            description.</li>
+        <li>URL: /movies/genre/:genreName</li>
+        <li>Method: GET</li>
+        <li>Query Parameters: :genreName</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing details for the genre, including the genre name and description.</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "genre": "horror",<br>
+                                "Description": " horror is a subgenre of horror film and horror fiction that uses elements of folklore to invoke fear and foreboding."<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="director">Return data about a director by name</h3>
+    <ul>
+        <li>Description: This endpoint returns the details for a movie director in the database, complete with their
+            name, bio and birth year.</li>
+        <li>URL: /movies/director/:directorName</li>
+        <li>Method: GET</li>
+        <li>Query Parameters: :directorName</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing details for the director, including their name, bio and birth year.
+        </li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "Name": "James Wan",<br>
+                                "Bio": 'James Wan is a Malaysian-Australian film director, screenwriter, and producer. He is best known for his work in the horror genre.',<br>
+                                "Birth": "1986-01-01T00:00:00.000Z"<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="newUser">Allow new users to register</h3>
+    <ul>
+        <li>Description: This endpoint allows new users to register with a username and favorite movies. An ID will be
+            generated using uuid.</li>
+        <li>URL: /users</li>
+        <li>Method: POST</li>
+        <li>Query Parameters: none</li>
+        <li>Request Body: JSON object with username (required), password (required), email (required), birthday (not
+            required) and favorite movies (not required)</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "Username": "Pinky",<br>
+                                "Password": "Pinky123",<br>
+                                "Email": "Pinky123@email.com",<br>
+                                "Birthday": "1984-09-27",<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+        <li>Response Body: JSON object containing new user details, including the new ID.</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "_id": "65bd89eb1532675fdd12af37",<br>
+                                "Username": "Pinky",<br>
+                                "Password": "Pinky123",<br>
+                                "Email": "Pinky123@email.com",<br>
+                                "Birthday": "1984-09-27T00:00:00.000Z",<br>
+                                "FavoriteMovies": []<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="userUpdate">Allow users to update their details</h3>
+    <ul>
+        <li>Description: This endpoint allows users to update their user details.</li>
+        <li>URL: /users/:Username</li>
+        <li>Method: PUT</li>
+        <li>Query Parameters: :Username</li>
+        <li>Request Body: JSON object with the user details to update</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "Username": "Piyush",<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+        <li>Response Body: JSON object containing user details, including the new user details.</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "_id": "65bd8a4e1532675fdd12af38",<br>
+                                "Username": "Piyush",<br>
+                                "Password": "mittal123",<br>
+                                "Email": "mittal123@email.com",<br>
+                                "Birthday": "1992-11-01T00:00:00.000Z",<br>
+                                "FavoriteMovies": []<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="movieFavorite">Allow users to add a movie to their list of favorites</h3>
+    <ul>
+        <li>Description: This endpoint allow users to add a single movie to their list of favorites.</li>
+        <li>URL: /users/:Username/movies/:MovieID</li>
+        <li>Method: POST</li>
+        <li>Query Parameters: :Username, :movieID</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing user details</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "_id": "65bd89911532675fdd12af36",<br>
+                                "Username": "bob_brown",<br>
+                                "Password": "bob_brown123",<br>
+                                "Email": "bob_brown@email.com",<br>
+                                "Birthday": "1993-12-05T00:00:00.000Z",<br>
+                                "FavoriteMovies": ["65bd82bb1532675fdd12af2e"]<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="movieUnfavorite">Allow users to remove a movie from their list of favorites</h3>
+    <ul>
+        <li>Description: This endpoint allow users to remove a single movie from their list of favorites.</li>
+        <li>URL: /users/:Username/movies/:MovieID</li>
+        <li>Method: DELETE</li>
+        <li>Query Parameters: :Username, :movieID</li>
+        <li>Request Body: none</li>
+        <li>Response Body: JSON object containing user details</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            {<br>
+                                "_id": "65bd89911532675fdd12af36",<br>
+                                "Username": "emily_wilson",<br>
+                                "Password": "emilyPass",<br>
+                                "Email": "emily@email.com",<br>
+                                "Birthday": "1993-12-05T00:00:00.000Z",<br>
+                                "FavoriteMovies": []<br>
+                            }
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
+    <h3 id="deleteUser">Allow users to deregister</h3>
+    <ul>
+        <li>Description: This endpoint users to be removed from the database.</li>
+        <li>URL: /users/:Username</li>
+        <li>Method: DELETE</li>
+        <li>Query Parameters: :Username</li>
+        <li>Request Body: none</li>
+        <li>Response Body: Text message confirming the user has been deleted.</li>
+        <ul>
+            <li>Example:<br>
+                <code>
+                            "[Username] has been deleted."
+                        </code>
+            </li>
+        </ul>
+    </ul>
+    <p><a href="#pageTop"><em>Return to top of page</em></a></p>
 </body>
 
 </html>

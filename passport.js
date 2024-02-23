@@ -47,7 +47,7 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //JWT is extracted from HTTP request header
       secretOrKey: process.env.secretKey, //use secret key to verify signature of the JWT (ensure client is who it says it is and JWT hasn't been altered)
     },
-    console.log("jwtSecret:", jwtSecret);
+
     async (jwtPayload, callback) => {
       //       //take the object literal of the decoded JWT payload as a parameter
       return await Users.findById(jwtPayload._id)

@@ -7,7 +7,7 @@ require("./passport");
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.userName,
-    expiresIn: "7d",
+    expiresIn: "15d",
     algorithm: "HS256",
   });
 };

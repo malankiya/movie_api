@@ -47,13 +47,10 @@ const uuid = require("uuid");
 // const CONNECTION_URI =
 //   "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix";
 mongoose
-  .connect(
-    "mongodb+srv://MyflixDBadmin:6UDIXNDIMXdbrHQq@myflix.s79dqhc.mongodb.net/movieAPI?retryWrites=true&w=majority&appName=Myflix",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.CONNECTION_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("Mongo Error", err));
 
@@ -236,7 +233,7 @@ app.put(
   }
 );
 
-// Get a user by firstName
+// Get a user by userName
 app.get(
   "/users/:userName",
   passport.authenticate("jwt", { session: false }),
