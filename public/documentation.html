@@ -150,9 +150,8 @@
         <li>Response Body: JSON object containing details for all movies in the database. Details include movieName,
             Description, Director (name, bio, birthday), Genre (name, description).
         </li>
-        <ul>
-            <li>Example:<br>
-                <code>
+        <li>Example:<br>
+            <code>
                     [
                     {<br>
                       "_id": "65c9fef2a71ad74d5d8083c5",<br>
@@ -176,8 +175,7 @@
                     }<br>
                                                ]
                             </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="singleMovie">Return data about a single movie by title</h3>
@@ -191,9 +189,10 @@
         <li>Response Body: JSON object containing details for the movie. Details include movieName, Description,
             Director
             (name, bio), Genre (name, description).</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+    <ul>
+        <li>Example:<br>
+            <code>
                                 {<br>
                                     "_id": "65c9fef1a71ad74d5d8083c3",<br>
                                     "genre": "Horror",<br>
@@ -204,9 +203,10 @@
                                     "movieName": 'The Forgotten Kingdom',<br>
                                     "bio": 'James Wan is a Malaysian-Australian film director, screenwriter, and producer. He is best known for his work in the horror genre.'<br>
                                   }<br>                        </code>
-            </li>
-        </ul>
+        </li>
+
     </ul>
+
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="genre">Return data about a genre by name</h3>
     <ul>
@@ -217,16 +217,16 @@
         <li>Query Parameters: :genreName</li>
         <li>Request Body: none</li>
         <li>Response Body: JSON object containing details for the genre, including the genre name and description.</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "genre": "horror",<br>
                                 "Description": " horror is a subgenre of horror film and horror fiction that uses elements of folklore to invoke fear and foreboding."<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="director">Return data about a director by name</h3>
@@ -239,17 +239,18 @@
         <li>Request Body: none</li>
         <li>Response Body: JSON object containing details for the director, including their name, bio and birth year.
         </li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "Name": "James Wan",<br>
                                 "Bio": 'James Wan is a Malaysian-Australian film director, screenwriter, and producer. He is best known for his work in the horror genre.',<br>
                                 "Birth": "1986-01-01T00:00:00.000Z"<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="newUser">Allow new users to register</h3>
@@ -261,9 +262,11 @@
         <li>Query Parameters: none</li>
         <li>Request Body: JSON object with username (required), password (required), email (required), birthday (not
             required) and favorite movies (not required)</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "Username": "Pinky",<br>
                                 "Password": "Pinky123",<br>
@@ -271,12 +274,14 @@
                                 "Birthday": "1984-09-27",<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
+    </ul>
+    <ul>
         <li>Response Body: JSON object containing new user details, including the new ID.</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "_id": "65bd89eb1532675fdd12af37",<br>
                                 "Username": "Pinky",<br>
@@ -286,8 +291,7 @@
                                 "FavoriteMovies": []<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="userUpdate">Allow users to update their details</h3>
@@ -297,19 +301,23 @@
         <li>Method: PUT</li>
         <li>Query Parameters: :Username</li>
         <li>Request Body: JSON object with the user details to update</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "Username": "Piyush",<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
+    </ul>
+    <ul>
         <li>Response Body: JSON object containing user details, including the new user details.</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "_id": "65bd8a4e1532675fdd12af38",<br>
                                 "Username": "Piyush",<br>
@@ -319,8 +327,7 @@
                                 "FavoriteMovies": []<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="movieFavorite">Allow users to add a movie to their list of favorites</h3>
@@ -331,9 +338,11 @@
         <li>Query Parameters: :Username, :movieID</li>
         <li>Request Body: none</li>
         <li>Response Body: JSON object containing user details</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "_id": "65bd89911532675fdd12af36",<br>
                                 "Username": "bob_brown",<br>
@@ -343,8 +352,7 @@
                                 "FavoriteMovies": ["65bd82bb1532675fdd12af2e"]<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="movieUnfavorite">Allow users to remove a movie from their list of favorites</h3>
@@ -355,9 +363,11 @@
         <li>Query Parameters: :Username, :movieID</li>
         <li>Request Body: none</li>
         <li>Response Body: JSON object containing user details</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             {<br>
                                 "_id": "65bd89911532675fdd12af36",<br>
                                 "Username": "emily_wilson",<br>
@@ -367,8 +377,7 @@
                                 "FavoriteMovies": []<br>
                             }
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
     <h3 id="deleteUser">Allow users to deregister</h3>
@@ -379,13 +388,14 @@
         <li>Query Parameters: :Username</li>
         <li>Request Body: none</li>
         <li>Response Body: Text message confirming the user has been deleted.</li>
-        <ul>
-            <li>Example:<br>
-                <code>
+    </ul>
+
+    <ul>
+        <li>Example:<br>
+            <code>
                             "[Username] has been deleted."
                         </code>
-            </li>
-        </ul>
+        </li>
     </ul>
     <p><a href="#pageTop"><em>Return to top of page</em></a></p>
 </body>
