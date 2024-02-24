@@ -207,50 +207,33 @@ app.get(
 // Update
 app.put(
   "/users/:userName",
-  [
-    //input validation here
-    check("userName", "Username is required").notEmpty(),
-    check(
-      "userName",
-      "Username contains non alphanumeric characters - not allowed."
-    ).isAlphanumeric(),
-    check("password", "Password is required").notEmpty(),
-    check("email", "Email does not appear to be valid").isEmail(),
-  ],
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    //check validation object for errors
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    //Condition to check that username in request matches username in request params
-    if (req.user.userName !== req.params.userName) {
-      return res.status(400).send("Permission denied.");
-    }
-    //Condition ends, finds user and updates their info
-    await User.findOneAndUpdate(
-      { userName: req.params.userName },
-      {
-        $set: {
-          userName: req.body.userName,
-          password: req.body.Password,
-          email: req.body.email,
-          birthday: req.body.birthday,
+    let hashedPassword = User.hashPassword(req.body.password);
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { userName: req.params.userName },
+        {
+          $set: {
+            email: req.body.email,
+          },
         },
-      },
-      { new: true }
-    ) //This line makes sure that the updated document is returned
-      .then((updatedUser) => {
+        { new: true }
+      );
+
+      if (updatedUser) {
         res.json(updatedUser);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+      } else {
+        res.status(404).send("User not found");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+      console.log("no updation");
+    }
   }
 );
+
 // Get a user by userName
 app.get(
   "/users/:userName",
