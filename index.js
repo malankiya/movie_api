@@ -31,10 +31,7 @@ app.use(
 
 //Import auth.js
 let auth = require("./auth")(app);
-
 app.use(express.urlencoded({ extended: true }));
-
-// app.use(bodyParser.urlencoded({ extended: true }));
 
 // Import passport and passport.js
 const passport = require("passport");
@@ -42,7 +39,6 @@ require("./passport");
 
 //Load documentation page
 app.use(express.static("public"));
-
 const uuid = require("uuid");
 
 mongoose
