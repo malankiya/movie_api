@@ -182,6 +182,27 @@ app.get(
     }
   }
 );
+// DELETE movie from users favorite
+app.delete(
+  "/users/:userName/movies/:movieid",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await User.findOneAndUpdate(
+      { userName: req.params.userName },
+      {
+        $pull: { favoritemovie: req.params.movieid },
+      },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
 
 // READ user list
 app.get(
@@ -202,6 +223,16 @@ app.get(
 // Update
 app.put(
   "/users/:userName",
+  [
+    check("userName", "userName is required").isLength({ min: 5 }),
+    check(
+      "userName",
+      "userName contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("password", "password is required").not().isEmpty(),
+    check("email", "email does not appear to be valid").isEmail(),
+  ],
+
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     let hashedPassword = User.hashPassword(req.body.password);
