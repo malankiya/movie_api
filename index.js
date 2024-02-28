@@ -213,7 +213,7 @@ app.get(
 
 // Update
 app.put(
-  "/users/:email",
+  "/users/:userName",
   [
     check("userName", "userName is required").isLength({ min: 5 }),
     check(
