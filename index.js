@@ -213,7 +213,7 @@ app.get(
 
 // Update
 app.put(
-  "/users/:userName",
+  "/users/:email",
   [
     check("userName", "userName is required").isLength({ min: 5 }),
     check(
@@ -229,11 +229,11 @@ app.put(
     let hashedPassword = User.hashPassword(req.body.password);
     try {
       const updatedUser = await User.findOneAndUpdate(
-        { userName: req.params.userName },
+        { email: req.params.email },
         {
           $set: {
             userName: req.body.userName,
-            password: req.body.password,
+            password: hashedPassword,
             email: req.body.email,
             birthday: req.body.birthday,
           },
@@ -320,16 +320,16 @@ app.post(
 );
 
 // Delete a user by username
-app.delete("/users/:userName", async (req, res) => {
+app.delete("/users/:email", async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({
-      userName: req.params.userName,
+      email: req.params.email,
     });
 
     if (!deletedUser) {
-      res.status(400).send(req.params.userName + " was not found");
+      res.status(400).send(req.params.email + " was not found");
     } else {
-      res.status(200).send(req.params.userName + " was deleted.");
+      res.status(200).send(req.params.email + " was deleted.");
     }
   } catch (err) {
     console.error(err);
