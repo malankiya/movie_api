@@ -229,7 +229,7 @@ app.put(
     let hashedPassword = User.hashPassword(req.body.password);
     try {
       const updatedUser = await User.findOneAndUpdate(
-        { email: req.params.email },
+        { userName: req.params.userName },
         {
           $set: {
             userName: req.body.userName,
