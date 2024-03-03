@@ -11,6 +11,7 @@ app.use(cors());
 let allowedOrigins = [
   "http://localhost:8000",
   "https://myflixapp-cw0r.onrender.com",
+  "http://localhost:1234",
 ];
 
 app.use(
