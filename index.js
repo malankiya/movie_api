@@ -12,6 +12,7 @@ let allowedOrigins = [
   "http://localhost:8000",
   "https://myflixapp-cw0r.onrender.com",
   "http://localhost:1234",
+  "http://localhost:4200",
   "https://mymovieclient.netlify.app",
 ];
 
