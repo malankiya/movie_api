@@ -322,7 +322,7 @@ app.post(
   }
 );
 
-// Delete a user by username
+// Delete a user by email
 app.delete("/users/:email", async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({
