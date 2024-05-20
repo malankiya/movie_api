@@ -2,7 +2,7 @@
 
 ## Description
 
-The MyFlix REST API is the server-side component of the MovieAPI web application (frontend coming soon!). The API provides users with access to information about different horror movies, including the plot, director and genre. Users are able to sign up, update their personal information, and create a list of their favorite scary movies.
+The MyFlix REST API is the server-side component of the MovieAPI web application (frontend coming soon!). The API provides users with access to information about different  movies, including the Movie detail, director and genre. Users are able to sign up, update their personal information, and create a list of their favorite scary movies.
 
 ## Documentation
 
